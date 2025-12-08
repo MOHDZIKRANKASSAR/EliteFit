@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EliteFit Gym</title>
+
+  <!-- Google Font: Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" /> <!-- Poppins is a clean geometric sans serif suitable for professional web UI. [web:85][web:91] -->
+
+  <style>
+    :root {
+      --bg-dark: #050509;
+      --bg-card: #111119;
+      --primary: #e3063b;
+      --primary-soft: rgba(227, 6, 59, 0.08);
+      --text-main: #f8f8ff;
+      --text-muted: #b3b3c2;
+      --border-soft: rgba(255, 255, 255, 0.08);
+      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.6);
+      --radius-lg: 18px;
+      --radius-pill: 999px;
+      --transition-fast: 0.25s ease;
+      --max-width: 1100px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top left, #1c0b15 0, #050509 45%, #000 100%);
+      color: var(--text-main);
+      line-height: 1.5;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Navbar */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 50;
+      background: linear-gradient(to bottom, rgba(5, 5, 10, 0.95), rgba(5, 5, 10, 0.7), transparent);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+    }
+
+    .nav-logo-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fff, var(--primary));
+      box-shadow: 0 0 16px rgba(227, 6, 59, 0.6);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    .nav-links a {
+      position: relative;
+      color: var(--text-muted);
+      transition: color var(--transition-fast);
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 0;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ff335c, #ff7b3c);
+      transition: width var(--transition-fast);
+    }
+
+    .nav-links a:hover {
+      color: var(--text-main);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      padding: 0.4rem 1.1rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(227, 6, 59, 0.7);
+      background: linear-gradient(135deg, rgba(227, 6, 59, 0.9), #ff7b3c);
+      box-shadow: 0 0 22px rgba(227, 6, 59, 0.6);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #fff;
+      cursor: pointer;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .nav-cta span {
+      font-size: 1rem;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.06);
+      box-shadow: 0 0 26px rgba(227, 6, 59, 0.9);
+    }
+
+    /* Mobile nav */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .nav-toggle span {
+      width: 20px;
+      height: 2px;
+      background: #fff;
+      border-radius: 999px;
+    }
+
+    /* Hero */
+    main {
+      padding-top: 4.5rem;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 3.5rem 0 4rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .eyebrow {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 0.9rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2.4rem, 3.4vw, 3.3rem);
+      line-height: 1.05;
+      margin-bottom: 1.1rem;
+    }
+
+    .hero-title span {
+      background: linear-gradient(120deg, #ff335c, #ffb347);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 30rem;
+      margin-bottom: 1.6rem;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin-bottom: 1.6rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.8rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-soft);
+      background: rgba(255, 255, 255, 0.02);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 12px rgba(227, 6, 59, 0.8);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      align-items: center;
+    }
+
+    .btn-primary {
+      padding: 0.8rem 1.6rem;
+      border-radius: var(--radius-pill);
+      border: none;
+      outline: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, #ff335c, #ff7b3c);
+      box-shadow: 0 20px 45px rgba(227, 6, 59, 0.6);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.08);
+      box-shadow: 0 26px 70px rgba(227, 6, 59, 0.9);
+    }
+
+    .btn-outline {
+      padding: 0.75rem 1.4rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-soft);
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-main);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .hero-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.3rem;
+      margin-top: 1.9rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .stat {
+      min-width: 5.5rem;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.1rem;
+      color: var(--text-main);
+    }
+
+    .hero-media {
+      position: relative;
+    }
+
+    .hero-card {
+      position: relative;
+      border-radius: 32px;
+      overflow: hidden;
+      background: radial-gradient(circle at top left, #ff335c 0, #111119 45%, #000 100%);
+      box-shadow: var(--shadow-soft);
+      aspect-ratio: 4 / 5;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 1.5rem;
+      isolation: isolate;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("https://images.pexels.com/photos/1552109/pexels-photo-1552109.jpeg?auto=compress&cs=tinysrgb&w=1200");
+      background-size: cover;
+      background-position: center;
+      opacity: 0.92;
+      mix-blend-mode: lighten;
+      filter: contrast(1.1) saturate(1.1);
+      z-index: -2;
+    }
+
+    .hero-gradient-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.95), transparent 55%);
+      z-index: -1;
+    }
+
+    .hero-tag {
+      position: absolute;
+      top: 1.1rem;
+      left: 1.3rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-badge-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      width: 100%;
+      color: #fff;
+      font-size: 0.8rem;
+    }
+
+    .hero-badge-bottom h3 {
+      font-size: 1rem;
+    }
+
+    .hero-badge-bottom span {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .hero-floating {
+      position: absolute;
+      top: 12%;
+      right: -0.4rem;
+      padding: 0.65rem 0.9rem;
+      border-radius: 16px;
+      background: rgba(5, 5, 10, 0.95);
+      border: 1px solid rgba(227, 6, 59, 0.5);
+      font-size: 0.75rem;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8);
+    }
+
+    .hero-floating strong {
+      color: var(--primary);
+    }
+
+    .hero-floating small {
+      display: block;
+      margin-top: 0.1rem;
+      color: var(--text-muted);
+      font-size: 0.7rem;
+    }
+
+    .hero-floating-2 {
+      position: absolute;
+      bottom: 13%;
+      left: -0.3rem;
+      padding: 0.6rem 0.9rem;
+      border-radius: 18px;
+      background: rgba(15, 15, 24, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .hero-floating-2 span {
+      font-weight: 600;
+      color: #fff;
+      font-size: 0.8rem;
+    }
+
+    /* Sections */
+    section {
+      padding: 4rem 0;
+    }
+
+    section:nth-of-type(2n) {
+      background: radial-gradient(circle at top left, #1a0a14 0, #050509 60%);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-eyebrow {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .section-title {
+      font-size: 1.6rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .section-description {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      max-width: 32rem;
+      margin: 0.2rem auto 0;
+    }
+
+    /* About */
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .about-card {
+      background: radial-gradient(circle at top left, rgba(227, 6, 59, 0.16), rgba(17, 17, 25, 0.97));
+      border-radius: var(--radius-lg);
+      padding: 1.6rem;
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .about-card p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .about-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1.1rem;
+      font-size: 0.85rem;
+    }
+
+    .about-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+    }
+
+    .about-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 0.9rem;
+    }
+
+    .about-label {
+      font-weight: 500;
+      margin-bottom: 0.1rem;
+    }
+
+    .about-text {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+
+    .about-highlight {
+      border-radius: var(--radius-lg);
+      padding: 1.4rem;
+      background: rgba(7, 7, 14, 0.9);
+      border: 1px dashed rgba(255, 255, 255, 0.08);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .about-highlight strong {
+      color: #fff;
+    }
+
+    /* Services */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1.3rem;
+    }
+
+    .service-card {
+      position: relative;
+      background: rgba(10, 10, 18, 0.96);
+      border-radius: var(--radius-lg);
+      padding: 1.2rem 1.1rem;
+      border: 1px solid var(--border-soft);
+      overflow: hidden;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+      cursor: pointer;
+    }
+
+    .service-card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(circle at top, rgba(227, 6, 59, 0.26), transparent 55%);
+      opacity: 0;
+      transition: opacity var(--transition-fast), transform var(--transition-fast);
+      transform: translateY(20%);
+      z-index: -1;
+    }
+
+    .service-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(227, 6, 59, 0.6);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
+      background: radial-gradient(circle at top left, rgba(227, 6, 59, 0.18), rgba(10, 10, 18, 0.98));
+    }
+
+    .service-card:hover::before {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .service-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      margin-bottom: 0.7rem;
+      background: rgba(0, 0, 0, 0.45);
+    }
+
+    .service-title {
+      font-size: 0.95rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .service-text {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Plans */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.4rem;
+    }
+
+    .plan-card {
+      position: relative;
+      border-radius: 22px;
+      background: rgba(7, 7, 14, 0.98);
+      border: 1px solid var(--border-soft);
+      padding: 1.6rem 1.4rem;
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.7);
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+      cursor: pointer;
+    }
+
+    .plan-card.featured {
+      background: radial-gradient(circle at top left, rgba(227, 6, 59, 0.35), rgba(7, 7, 14, 0.98));
+      border-color: rgba(227, 6, 59, 0.9);
+      transform: translateY(-6px);
+    }
+
+    .plan-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+    }
+
+    .plan-name {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .plan-price {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .plan-price span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      margin-left: 0.2rem;
+    }
+
+    .plan-features {
+      margin-top: 0.4rem;
+      margin-bottom: 0.7rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .plan-features li {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-bottom: 0.32rem;
+    }
+
+    .plan-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+    }
+
+    .plan-cta {
+      margin-top: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: var(--primary);
+      padding: 0.45rem 0.9rem;
+      border-radius: var(--radius-pill);
+      background: rgba(227, 6, 59, 0.08);
+      align-self: flex-start;
+      transition: background var(--transition-fast), color var(--transition-fast);
+    }
+
+    .plan-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(227, 6, 59, 0.7);
+      box-shadow: 0 20px 56px rgba(0, 0, 0, 0.9);
+      background: radial-gradient(circle at top left, rgba(227, 6, 59, 0.2), rgba(7, 7, 14, 0.98));
+    }
+
+    .plan-card:hover .plan-cta {
+      background: rgba(227, 6, 59, 0.18);
+      color: #fff;
+    }
+
+    /* Contact */
+    .contact-wrapper {
+      max-width: 720px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .contact-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      margin-bottom: 1.6rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+    }
+
+    .contact-pill {
+      padding: 0.4rem 0.85rem;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-soft);
+      font-size: 0.8rem;
+      color: var(--text-main);
+    }
+
+    .contact-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(227, 6, 59, 0.16);
+      color: var(--primary);
+      font-size: 0.9rem;
+    }
+
+    .contact-form {
+      margin-top: 1.6rem;
+      text-align: left;
+      background: rgba(7, 7, 14, 0.98);
+      padding: 1.4rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-soft);
+      display: grid;
+      gap: 0.9rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.9rem;
+    }
+
+    label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.2rem;
+      display: block;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 0.65rem 0.8rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.6);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: rgba(227, 6, 59, 0.8);
+      box-shadow: 0 0 0 1px rgba(227, 6, 59, 0.6);
+      background: rgba(0, 0, 0, 0.9);
+    }
+
+    .btn-submit {
+      margin-top: 0.4rem;
+      width: fit-content;
+    }
+
+    .map-wrapper {
+      margin-top: 1.8rem;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.75);
+      min-height: 220px;
+    }
+
+    .map-wrapper iframe {
+      width: 100%;
+      height: 260px;
+      border: 0;
+      filter: grayscale(0.2) contrast(1.05) saturate(0.9);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 1.3rem 0 1.6rem;
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      background: radial-gradient(circle at top, #170812 0, #050509 50%);
+    }
+
+    /* WhatsApp Floating Chat */
+    .whatsapp-btn {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: #25d366;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+      cursor: pointer;
+      z-index: 80;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .whatsapp-btn:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.8);
+    }
+
+    .whatsapp-btn img {
+      width: 26px;
+      height: 26px;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero-grid,
+      .about-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero {
+        padding-top: 2.8rem;
+      }
+
+      .hero-media {
+        order: -1;
+      }
+
+      .hero-card {
+        max-width: 360px;
+        margin: 0 auto;
+      }
+
+      header {
+        background: rgba(5, 5, 10, 0.97);
+      }
+
+      .nav-links {
+        position: fixed;
+        inset: 3.6rem 1rem auto 1rem;
+        border-radius: 18px;
+        background: rgba(5, 5, 12, 0.97);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        padding: 0.9rem 1rem 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.85rem;
+        transform-origin: top;
+        transform: scaleY(0);
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.22s ease, opacity 0.22s ease;
+      }
+
+      .nav-links.open {
+        transform: scaleY(1);
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .nav-toggle {
+        display: flex;
+      }
+
+      .nav-cta {
+        display: none;
+      }
+
+      .hero-title {
+        font-size: 2.2rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .hero {
+        min-height: auto;
+      }
+
+      .hero-stats {
+        gap: 0.9rem;
+      }
+
+      section {
+        padding: 3.1rem 0;
+      }
+
+      .map-wrapper iframe {
+        height: 220px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- WhatsApp Floating Chat -->
+  <!-- Replace the phone number with your own. Uses a standard floating chat button pattern. [web:83][web:86] -->
+  <a class="whatsapp-btn" href="https://wa.me/911234567890?text=Hi%20EliteFit%20Gym%2C%20I%27d%20like%20to%20know%20more%20about%20your%20plans." target="_blank" aria-label="Chat on WhatsApp">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" alt="WhatsApp" />
+  </a>
+
+  <header>
+    <div class="container nav">
+      <div class="nav-logo">
+        <span class="nav-logo-dot"></span>
+        <span>EliteFit Gym</span>
+      </div>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="#hero">Home</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#plans">Plans</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <button class="nav-cta" onclick="document.getElementById('plans').scrollIntoView({behavior:'smooth'});">
+        Join Now <span>➜</span>
+      </button>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero" id="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div>
+            <div class="eyebrow">Premium Training Studio</div>
+            <h1 class="hero-title">
+              Transform Your Body.<br />
+              <span>Transform Your Life.</span>
+            </h1>
+            <p class="hero-subtitle">
+              EliteFit Gym blends science-backed training, personalized coaching, and a motivating atmosphere so you can build strength, lose fat, and perform at your peak.
+            </p>
+
+            <div class="hero-badges">
+              <div class="badge">
+                <span class="badge-dot"></span>
+                Certified personal trainers
+              </div>
+              <div class="badge">
+                <span class="badge-dot"></span>
+                State-of-the-art equipment
+              </div>
+              <div class="badge">
+                <span class="badge-dot"></span>
+                Tailored workout plans
+              </div>
+            </div>
+
+            <div class="hero-actions">
+              <button class="btn-primary" onclick="document.getElementById('plans').scrollIntoView({behavior:'smooth'});">
+                Join Now
+                <span>⬤</span>
+              </button>
+              <button class="btn-outline" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'});">
+                Explore the gym →
+              </button>
+            </div>
+
+            <div class="hero-stats">
+              <div class="stat">
+                <strong>250+</strong>
+                Active members
+              </div>
+              <div class="stat">
+                <strong>30+</strong>
+                Weekly classes
+              </div>
+              <div class="stat">
+                <strong>7 AM–11 PM</strong>
+                Open every day
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-media">
+            <div class="hero-card">
+              <div class="hero-gradient-overlay"></div>
+
+              <div class="hero-tag">Downtown • Premium Access</div>
+
+              <div class="hero-floating">
+                <strong>+120</strong> new sign-ups
+                <small>last 30 days</small>
+              </div>
+
+              <div class="hero-floating-2">
+                <span>Personal Coaching</span>
+                <small>Strength, cardio & nutrition support tailored to you.</small>
+              </div>
+
+              <div class="hero-badge-bottom">
+                <div>
+                  <h3>Night Session Squad</h3>
+                  <span>Strength • Conditioning • Mobility</span>
+                </div>
+                <div style="text-align:right;">
+                  <span style="font-size:0.7rem;color:var(--text-muted);">From</span>
+                  <div style="font-weight:600;">₹1999 / mo</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-eyebrow">About EliteFit</div>
+          <h2 class="section-title">Built for results, not excuses.</h2>
+          <p class="section-description">
+            From your first workout to your next personal record, the EliteFit coaching team supports every rep, set, and goal with a clear plan.
+          </p>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-card">
+            <p>
+              EliteFit Gym is a modern training space designed for people who take their health seriously. Every detail—from equipment layout to class programming—is optimized to help you move better, feel stronger, and stay consistent.
+            </p>
+
+            <div class="about-list">
+              <div class="about-item">
+                <div class="about-icon">🏅</div>
+                <div>
+                  <div class="about-label">Certified trainers</div>
+                  <div class="about-text">
+                    Level-2 and Level-3 certified coaches guiding your workouts with proper form and progression.
+                  </div>
+                </div>
+              </div>
+
+              <div class="about-item">
+                <div class="about-icon">🏋️</div>
+                <div>
+                  <div class="about-label">Modern equipment</div>
+                  <div class="about-text">
+                    Premium strength racks, functional rigs, sleds, assault bikes, and performance cardio machines.
+                  </div>
+                </div>
+              </div>
+
+              <div class="about-item">
+                <div class="about-icon">📊</div>
+                <div>
+                  <div class="about-label">Personalized plans</div>
+                  <div class="about-text">
+                    Programs tailored to your goal—muscle gain, fat loss, performance, or overall health.
+                  </div>
+                </div>
+              </div>
+
+              <div class="about-item">
+                <div class="about-icon">💬</div>
+                <div>
+                  <div class="about-label">Accountability</div>
+                  <div class="about-text">
+                    Progress tracking, regular check-ins, and form corrections to keep you on track.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="about-highlight">
+            <strong>How it works:</strong> Choose your goal, complete a quick assessment, and receive a personalized workout and nutrition roadmap from our coaching team within 24 hours. Show up, follow the plan, and we handle the programming so you can focus on training.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-eyebrow">Services</div>
+          <h2 class="section-title">Everything you need in one place.</h2>
+          <p class="section-description">
+            Train solo, join high-energy classes, or work 1:1 with a coach—the choice is yours.
+          </p>
+        </div>
+
+        <div class="services-grid">
+          <div class="service-card">
+            <div class="service-icon">🏋️</div>
+            <h3 class="service-title">Strength Training</h3>
+            <p class="service-text">
+              Progressive resistance training to build muscle, improve posture, and increase full-body strength.
+            </p>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon">❤️</div>
+            <h3 class="service-title">Cardio Training</h3>
+            <p class="service-text">
+              Treadmills, bikes, rowers, and interval sessions designed to upgrade your heart health and stamina.
+            </p>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon">🧑‍🏫</div>
+            <h3 class="service-title">Personal Training</h3>
+            <p class="service-text">
+              1:1 coaching focused on your specific goals, movement patterns, and schedule.
+            </p>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon">🔥</div>
+            <h3 class="service-title">Weight Loss Programs</h3>
+            <p class="service-text">
+              Structured workouts and nutrition guidance crafted to burn fat while preserving lean muscle.
+            </p>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon">⛓️</div>
+            <h3 class="service-title">CrossFit & Functional</h3>
+            <p class="service-text">
+              High-intensity functional training that blends strength, conditioning, and athletic movement.
+            </p>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon">🎵</div>
+            <h3 class="service-title">Zumba & Dance</h3>
+            <p class="service-text">
+              High-energy dance sessions that torch calories in a fun, music-driven environment.
+            </p>
+          </div>
+
+          <div class="service-card">
+            <div class="service-icon">🧘</div>
+            <h3 class="service-title">Mobility & Recovery</h3>
+            <p class="service-text">
+              Stretching, mobility drills, and guided recovery so you feel fresh for every session.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Plans -->
+    <section id="plans">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-eyebrow">Membership Plans</div>
+          <h2 class="section-title">Choose your commitment level.</h2>
+          <p class="section-description">
+            Simple plans with transparent pricing. Upgrade or pause anytime.
+          </p>
+        </div>
+
+        <div class="plans-grid">
+          <article class="plan-card">
+            <div class="plan-label">Starter</div>
+            <h3 class="plan-name">Basic</h3>
+            <div class="plan-price">
+              ₹1,499<span>/ month</span>
+            </div>
+            <ul class="plan-features">
+              <li><span class="plan-dot"></span> Gym floor access (off-peak hours)</li>
+              <li><span class="plan-dot"></span> Access to strength & cardio area</li>
+              <li><span class="plan-dot"></span> Locker & shower facility</li>
+            </ul>
+            <div class="plan-cta">
+              Get Basic <span>→</span>
+            </div>
+          </article>
+
+          <article class="plan-card featured">
+            <div class="plan-label">Most Popular</div>
+            <h3 class="plan-name">Standard</h3>
+            <div class="plan-price">
+              ₹2,499<span>/ month</span>
+            </div>
+            <ul class="plan-features">
+              <li><span class="plan-dot"></span> 24/7 gym access</li>
+              <li><span class="plan-dot"></span> All group classes included</li>
+              <li><span class="plan-dot"></span> 1 personal training session / month</li>
+              <li><span class="plan-dot"></span> Body composition check every 6 weeks</li>
+            </ul>
+            <div class="plan-cta">
+              Join Standard <span>→</span>
+            </div>
+          </article>
+
+          <article class="plan-card">
+            <div class="plan-label">For High Performers</div>
+            <h3 class="plan-name">Premium</h3>
+            <div class="plan-price">
+              ₹4,499<span>/ month</span>
+            </div>
+            <ul class="plan-features">
+              <li><span class="plan-dot"></span> Unlimited personal training</li>
+              <li><span class="plan-dot"></span> Custom training & nutrition roadmap</li>
+              <li><span class="plan-dot"></span> Priority bookings and support</li>
+              <li><span class="plan-dot"></span> Quarterly performance review</li>
+            </ul>
+            <div class="plan-cta">
+              Go Premium <span>→</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-eyebrow">Contact</div>
+          <h2 class="section-title">Let’s talk about your goals.</h2>
+          <p class="section-description">
+            Reach out via phone, email, or WhatsApp. The team will respond within one business day.
+          </p>
+        </div>
+
+        <div class="contact-wrapper">
+          <div class="contact-details">
+            <div class="contact-row">
+              <div class="contact-icon">📞</div>
+              <div class="contact-pill">+91 12345 67890</div>
+            </div>
+            <div class="contact-row">
+              <div class="contact-icon">✉️</div>
+              <div class="contact-pill">contact@elitefitgym.com</div>
+            </div>
+            <div class="contact-row">
+              <div class="contact-icon">📍</div>
+              <div class="contact-pill">EliteFit Gym, Downtown Business District, Your City</div>
+            </div>
+          </div>
+
+          <!-- Contact Form -->
+          <form class="contact-form">
+            <div class="form-row">
+              <div>
+                <label for="name">Full name</label>
+                <input type="text" id="name" placeholder="John Doe" />
+              </div>
+              <div>
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="you@example.com" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div>
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" placeholder="+91 00000 00000" />
+              </div>
+              <div>
+                <label for="goal">Primary goal</label>
+                <input type="text" id="goal" placeholder="Weight loss, muscle gain, performance..." />
+              </div>
+            </div>
+
+            <div>
+              <label for="message">Message</label>
+              <textarea id="message" rows="3" placeholder="Share your current fitness level and what you want to achieve."></textarea>
+            </div>
+
+            <button type="button" class="btn-primary btn-submit">
+              Send Message
+            </button>
+          </form>
+
+          <!-- Google Map Embed (replace src with your own location if needed). Google Maps provides an embeddable iframe for locations. [web:84] -->
+          <div class="map-wrapper">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d241317.157403333!2d72.74109983768472!3d19.082197839424615!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3AFakeId!2sEliteFit%20Gym!5e0!3m2!1sen!2sin!4v1700000000000"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      © <span id="year"></span> EliteFit Gym. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    // Current year for footer
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Mobile nav toggle
+    const navToggle = document.getElementById("navToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    navToggle.addEventListener("click", () => {
+      navLinks.classList.toggle("open");
+    });
+
+    navLinks.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+      });
+    });
+  </script>
+</body>
+</html>
+
